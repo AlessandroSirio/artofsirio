@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Graphic Design</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <div class="logo" onclick="location.href='index.html'">
+    <img src="images/logo.png" alt="logo">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Portfolio</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- GRID PROGETTI -->
+<section class="gd-grid">
+
+  <!-- UNSEEN -->
+  <a href="#" class="gd-item" onclick="openProject(event, 'unseen')">
+    <div class="gd-image">
+      <img src="images/gdunseen.png" alt="">
+      <div class="gd-overlay"><span></span></div>
+    </div>
+    <div class="gd-text">
+      <h2>Unseen Cat Studio</h2>
+      <p>Brand Identity / 2026</p>
+    </div>
+  </a>
+
+  <!-- MATTEOTTI -->
+  <a href="#" class="gd-item" onclick="openProject(event, 'matteotti')">
+    <div class="gd-image">
+      <img src="images/gdmatteotti.jpg" alt="">
+      <div class="gd-overlay"><span></span></div>
+    </div>
+    <div class="gd-text">
+      <h2>100 Matteotti</h2>
+      <p>Social Design / 2025</p>
+    </div>
+  </a>
+
+</section>
+
+<!-- MODAL -->
+<div class="project-modal" id="projectModal">
+  <div class="project-content">
+
+    <button class="close-btn" onclick="closeProject()">×</button>
+
+    <!-- UNSEEN PROJECT -->
+    <div id="unseen" class="project-block">
+
+      <section class="block">
+        <h2><strong>The Problem</strong></h2>
+        <p>
+          The original identity for Unseen Cat Studio struggled with visibility and clarity.
+          While the dark, atmospheric logo aligned conceptually with the studio’s focus on psychological horror,
+          it relied too heavily on low contrast and subtle details. The cat figure was difficult to distinguish,
+          especially at smaller sizes or in digital contexts, and the typography blended into the background.
+          As a result, the logo communicated mood but lacked immediacy, scalability, and strong brand recognition.
+
+        </p>
+        <img src="images/unseencatstudio1.png" alt="">
+      </section>
+
+      <section class="block">
+        <h2><strong>The Idea</strong></h2>
+        <p>
+          The redesign builds on the studio’s core theme of duality—comfort versus unease,
+          seen versus unseen—using the cat as a symbolic anchor. The concept introduces a clearer visual metaphor:
+          two overlapping cat silhouettes that suggest presence and absence at once.
+          This dual imagery reflects the studio’s narrative approach, where familiar elements become unsettling.
+          The idea was to preserve the eerie tone while making the identity more legible, iconic, and adaptable across platforms.
+
+        </p>
+        <img src="images/unseencatstudio2.png" alt="">
+      </section>
+
+      <section class="block">
+        <h2><strong>The Solution</strong></h2>
+        <p>
+          The final logo adopts a high-contrast black-and-white palette to enhance readability and impact.
+          The cat silhouette is simplified into a bold, recognizable shape, with sharp eyes acting as a focal point.
+          The secondary, faded silhouette reinforces the theme of duality without adding visual noise.
+          Typography is clean and modern, with a clear hierarchy that separates “Unseen Cat” from “Studio,”
+          improving legibility at all scales. Overall, the redesign balances atmosphere and functionality,
+          resulting in a more versatile and memorable brand identity.
+
+        </p>
+        <img src="images/unseencatstudio3.jpg" alt="">
+      </section>
+
+    </div>
+
+    <!-- MATTEOTTI PROJECT -->
+    <div id="matteotti" class="project-block" style="display:none;">
+
+      <section class="block">
+        <h2><strong>The Problem</strong></h2>
+        <p>
+          The memory of Giacomo Matteotti—and the historical weight of events like his opposition to fascism
+          and his assassination in 1924—risks feeling distant for younger generations.
+          Traditional commemorations often rely on formal language, archival imagery, and institutional tones
+          that may not resonate with a youth audience. Organizations such as CGIL, ANPI, and local mutual aid societies
+          like SOMS Settimo Torinese face the challenge of keeping historical memory alive in a way that feels relevant,
+          immediate, and engaging—especially in public urban spaces.
+        </p>
+        <img src="images/matteotti1.jpg" alt="">
+      </section>
+
+      <section class="block">
+        <h2><strong>The Idea</strong></h2>
+        <p>
+          The project reimagines key moments in Matteotti’s life through a bold pop-art visual language.
+          By using vibrant colors, simplified shapes, and graphic contrasts, the posters translate complex historical
+          narratives into striking, contemporary images. This stylistic choice bridges past and present,
+          borrowing from visual codes familiar to younger audiences (street art, digital illustration, poster culture).
+          Instead of presenting Matteotti as a distant historical figure, the imagery frames him as a vivid,
+          almost iconic presence—surrounded by scenes of political tension, personal life, and public mobilization.
+        </p>
+        <img src="images/matteotti2.png" alt="">
+      </section>
+
+      <section class="block">
+        <h2><strong>The Solution</strong></h2>
+        <p>
+          The result is a series of large-format posters and banners designed for public display—
+          specifically installed in front of the CGIL headquarters in Settimo Torinese.
+          This placement transforms a commemorative initiative into a visible, everyday encounter.
+          Passersby, including younger viewers, are drawn in by the aesthetic first, then invited to reflect on the story behind it.
+          The collaboration between CGIL, ANPI, and SOMS ensures both historical accuracy and civic relevance,
+          while the pop-art approach functions as a gateway to engagement.
+          By combining cultural memory with contemporary visual language, the project succeeds in turning commemoration
+          into communication—making Matteotti’s legacy accessible, recognizable, and meaningful.
+        </p>
+        <img src="images/matteotti3.jpg" alt="">
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+const modal = document.getElementById('projectModal');
+
+function openProject(e, project) {
+  e.preventDefault();
+  modal.classList.add('active');
+
+  document.querySelectorAll('.project-block').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  document.getElementById(project).style.display = 'block';
+}
+
+function closeProject() {
+  modal.classList.remove('active');
+}
+</script>
+
+</body>
+</html>
