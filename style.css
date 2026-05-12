@@ -32,6 +32,16 @@ nav a {
   color: #000;
 }
 
+.hero-text h1 {
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+nav a {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
