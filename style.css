@@ -478,3 +478,48 @@ html {
   transform: scale(1.01);
   opacity: 0.9;
 }
+
+.icon-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  padding: 40px 0;
+}
+
+.icon-item {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+.icon-item img {
+  width: 100%;
+  height: auto;
+  transition: 0.35s ease;
+}
+
+/* testo nascosto */
+.icon-item span {
+  position: absolute;
+  opacity: 0;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #000;
+  transition: 0.3s ease;
+  text-align: center;
+}
+
+/* hover effect */
+.icon-item:hover img {
+  filter: blur(5px);
+  transform: scale(1.05);
+}
+
+.icon-item:hover span {
+  opacity: 1;
+}
