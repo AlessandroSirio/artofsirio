@@ -32,28 +32,6 @@ nav a {
   color: #000;
 }
 
-.hero {
-  width: 100%;
-  min-height: 75vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding-top: 30px;
-  box-sizing: border-box;
-
-  position: relative;
-  overflow: hidden;
-}
-
-.hero img {
-  width: 35%;
-  max-width: 450px;
-  height: auto;
-  display: block;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
