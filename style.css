@@ -40,13 +40,8 @@ nav a {
 }
 
 .hero video {
-  width: 60%;
-  max-width: 900px;
-
-  height: auto;
-
-  object-fit: contain;
-  display: block;
+  width: 55%;
+  max-width: 850px;
 }
 
 /* GRID */
