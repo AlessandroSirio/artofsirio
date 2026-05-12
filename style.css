@@ -35,25 +35,23 @@ nav a {
   font-weight: 400;
 }
 
-.hero-text {
+.hero {
   width: 100%;
-  min-height: 70vh;
+  height: 75vh;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  text-align: center;
-  padding: 0 20px;
+  padding-top: 20px;
   box-sizing: border-box;
 }
 
-.hero-text h1 {
-  font-size: 52px;
-  font-weight: 400;
-  letter-spacing: -1px;
-  margin: 0;
+.hero img {
+  width: 40%;
+  max-width: 500px;
+  height: auto;
+  display: block;
 }
 
 nav a {
