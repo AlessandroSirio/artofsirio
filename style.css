@@ -39,9 +39,10 @@ nav a {
   align-items: center;
 }
 
-.hero video {
-  width: 55%;
-  max-width: 850px;
+.hero img {
+  max-width: 60%;
+  height: auto;
+  display: block;
 }
 
 /* GRID */
