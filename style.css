@@ -33,16 +33,20 @@ nav a {
 }
 
 .hero {
+  height: 75vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 75vh;
 }
 
 .hero video {
   width: 60%;
-  max-height: 70vh;
+  max-width: 900px;
+
+  height: auto;
+
   object-fit: contain;
+  display: block;
 }
 
 /* GRID */
