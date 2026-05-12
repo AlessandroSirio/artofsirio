@@ -30,32 +30,25 @@ nav ul {
 nav a {
   text-decoration: none;
   color: #000;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  font-weight: 400;
 }
 
+/* HERO */
 .hero {
-  width: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  padding: 40px 0 20px;
-  box-sizing: border-box;
+  height: 75vh; /* o 100vh */
 }
+
 
 .hero img {
-  width: 28%;       /* 👈 più piccola */
-  max-width: 360px; /* 👈 limite massimo */
+  max-width: 60%;
   height: auto;
-  display: block;
 }
 
-nav a {
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  font-weight: 400;
+/* GRID */
+.grid-section {
+  padding: 40px;
 }
 
 .grid {
