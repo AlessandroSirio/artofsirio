@@ -489,8 +489,8 @@ html {
 
 .icon-item {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 160px;   /* prima 110px */
+  height: 160px;  /* prima 110px */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -508,16 +508,22 @@ html {
   position: absolute;
   opacity: 0;
   font-size: 14px;
-  letter-spacing: 0.5px;
-  color: #000;
+  letter-spacing: 0.8px;
+  color: #fff;
+
+  background: rgba(0, 0, 0, 0.65);
+  padding: 6px 10px;
+  border-radius: 6px;
+
   transition: 0.3s ease;
   text-align: center;
+  white-space: nowrap;
 }
 
 /* hover effect */
 .icon-item:hover img {
-  filter: blur(5px);
-  transform: scale(1.05);
+  filter: blur(4px) brightness(0.7);
+  transform: scale(1.08);
 }
 
 .icon-item:hover span {
