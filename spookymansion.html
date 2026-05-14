@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spooky Mansion (Personal Project)</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+  <a href="home.html" class="logo">
+    <img src="images/logosirio.png" alt="Alessandro Sirio Ceresa">
+  </a>
+
+  <nav class="nav">
+    <a href="about.html">About</a>
+    <a href="contact.html">Contacts</a>
+  </nav>
+
+</header>
+
+<!-- HERO -->
+<section class="project-hero">
+  <img src="SPOOKYMANSION/spookymansionbanner.jpg" alt="Spooky Mansion Vinyl Cover">
+</section>
+
+<!-- PROJECT -->
+<section class="project-page">
+
+  <div class="project-container">
+
+    <!-- INTRO -->
+    <div class="project-intro">
+
+      <div>
+        <span>Year</span>
+        <p>2025</p>
+      </div>
+
+      <div>
+        <span>Role</span>
+        <p>Art Direction, Cover Design</p>
+      </div>
+
+      <div>
+        <span>Tools</span>
+        <p>Illustrator, Photoshop, Procreate</p>
+      </div>
+
+    </div>
+
+    <!-- THE PROBLEM -->
+    <section class="case-section">
+
+      <div class="case-label">
+        <h2>The Problem</h2>
+      </div>
+
+      <div class="case-content">
+
+        <p>
+          This university project focused on designing a fictional vinyl cover
+          for a lesser-known band we personally connected with.
+        </p>
+
+        <p>
+          I chose Spooky Mansion, a Los Angeles-based band originally from the Bay Area,
+          known for blending surf rock, soul, and garage rock into a breezy,
+          high-energy sound.
+        </p>
+
+        <p>
+          The challenge was to visually translate the duality within their music:
+          relaxed and nostalgic on the surface,
+          yet emotionally raw and psychedelic underneath.
+        </p>
+
+        <p>
+          The cover needed to avoid generic retro aesthetics while still capturing
+          the warmth, movement, and spontaneity that define the band's sound and live performances.
+        </p>
+
+        <div class="case-gallery is-banner">
+          <img src="SPOOKYMANSION/spookymansion-problem.jpg"
+          class="gallery-img"
+          alt="Spooky Mansion Design Process">
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- THE IDEA -->
+    <section class="case-section">
+
+      <div class="case-label">
+        <h2>The Idea</h2>
+      </div>
+
+      <div class="case-content">
+
+        <p>
+          The concept started from the emotional contrast inside Spooky Mansion’s music.
+        </p>
+
+        <p>
+          Their sound feels bright, loose, and summery,
+          while still carrying a subtle sense of melancholy and distortion.
+        </p>
+
+        <p>
+          I wanted the visual identity of the vinyl to reflect this balance between carefree energy and emotional haze.
+        </p>
+
+        <p>
+          The design draws inspiration from vintage surf culture,
+          psychedelic posters, and 70s-inspired graphic experimentation.
+        </p>
+
+        <p>
+          Warm oranges and saturated yellows recreate the feeling of sunlight and heat,
+          while turquoise tones introduce freshness and movement,
+          echoing the ocean-inspired atmosphere of surf rock.
+        </p>
+
+        <div class="case-gallery is-banner">
+          <img src="SPOOKYMANSION/spookymansion-theidea.jpg"
+          class="gallery-img"
+          alt="Spooky Mansion Visual Concept">
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- THE SOLUTION -->
+    <section class="case-section">
+
+      <div class="case-label">
+        <h2>The Solution</h2>
+      </div>
+
+      <div class="case-content">
+
+        <p>
+          The final vinyl cover combines bold color blocking,
+          stylized illustration, and experimental typography
+          into a cohesive visual system inspired by the sonic identity of the band.
+        </p>
+
+        <p>
+          The front cover focuses on immediacy and personality,
+          using fluid forms and vibrant contrasts
+          to communicate the energetic “surf-soul-rock-n-roll” vibe of Spooky Mansion.
+        </p>
+
+        <p>
+          The back cover simplifies the composition while maintaining
+          the same palette and visual rhythm,
+          creating a cleaner and more atmospheric layout.
+        </p>
+
+        <p>
+          The final result is a cover design that feels nostalgic,
+          dynamic, and contemporary at the same time —
+          visually translating the warmth, rhythm,
+          and emotional spontaneity of the band’s music.
+        </p>
+
+        <div class="case-gallery is-banner">
+          <img src="SPOOKYMANSION/spookymansion-thesolution.jpg"
+          class="gallery-img"
+          alt="Final Spooky Mansion Vinyl Design">
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div class="left">
+    Alessandro Sirio Ceresa — Credits © 2026
+  </div>
+
+  <div class="right">
+
+    <a href="https://www.instagram.com/artofsirio/" target="_blank">
+      Instagram
+    </a>
+
+    <a href="https://www.linkedin.com/" target="_blank">
+      LinkedIn
+    </a>
+
+    <a href="https://www.artstation.com/" target="_blank">
+      ArtStation
+    </a>
+
+  </div>
+
+</footer>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <img id="lightbox-img" alt="">
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const images = document.querySelectorAll('.gallery-img, .full-project-img');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  images.forEach(img => {
+
+    img.addEventListener('click', () => {
+
+      lightbox.style.display = 'flex';
+      lightboxImg.src = img.src;
+
+    });
+
+  });
+
+  lightbox.addEventListener('click', () => {
+
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
