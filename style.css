@@ -557,6 +557,42 @@ html, body {
   max-height: 90%;
 }
 
+/* =========================
+   FIXED SIDE BANNERS
+========================= */
+
+.side-banner {
+  position: fixed;
+
+  top: 0;
+  bottom: 0;
+
+  width: 220px;
+  height: 100vh;
+
+  overflow: hidden;
+
+  z-index: 0;;
+}
+
+.left-banner {
+  left: 0;
+}
+
+.right-banner {
+  right: 0;
+}
+
+.side-banner img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+
+  filter: grayscale(100%);
+  opacity: 0.9;
+}
 
 /* =========================
    HEADER + FOOTER
@@ -837,8 +873,6 @@ html, body {
   display: flex;
   gap: 60px;
   flex-wrap: wrap;
-
-  margin-bottom: 100px;
 }
 
 .project-intro span {
@@ -860,7 +894,7 @@ html, body {
 }
 
 .case-section {
-  padding: 80px 0;
+  padding: 0 0 80px;
 
   border-top: 1px solid #eee;
 
@@ -911,11 +945,6 @@ html, body {
   transition: 0.3s ease;
 }
 
-.case-gallery img:hover,
-.full-project-img:hover {
-  transform: scale(1.01);
-  opacity: 0.9;
-}
 
 .full-project-img {
   margin-top: 40px;
@@ -991,4 +1020,52 @@ html, body {
 
   /* 👇 elimina qualsiasi “aria” */
   margin-top: 0;
+}
+
+/* =========================
+   FULLWIDTH PROJECT IMAGES
+========================= */
+
+.case-gallery.is-banner {
+  width: 100vw;
+
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  margin-top: 0;
+}
+
+.case-gallery.is-banner img {
+  width: 100%;
+  height: auto;
+
+  display: block;
+}
+
+/* =========================
+   PROJECT PAGE FULLBLEED FIX
+========================= */
+
+.case-section {
+  padding: 0;
+  border-top: none;
+}
+
+.case-content {
+  margin: 0;
+  padding: 0;
+}
+
+.case-gallery.is-banner {
+  width: 100vw;
+
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+
+  margin-top: 0;
+}
+
+.case-gallery.is-banner img {
+  width: 100%;
+  display: block;
 }
