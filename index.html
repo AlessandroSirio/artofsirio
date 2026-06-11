@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art of Sirio</title>
+  <meta name="description" content="Visual designer, illustratore, fumettista e artista contemporaneo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f3ef;
+      --surface: #eeece8;
+      --border: rgba(0,0,0,0.08);
+      --border-mid: rgba(0,0,0,0.14);
+      --text: #1a1a18;
+      --muted: rgba(26,26,24,0.5);
+      --accent: #2a2a28;
+      --accent-warm: #8a6a4a;
+      --accent-dim: rgba(138,106,74,0.12);
+      --font: 'Ubuntu', sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font); font-weight: 300;
+      overflow-x: hidden; cursor: none;
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+    .cursor {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s var(--ease);
+    }
+    .cursor-ring {
+      position: fixed; width: 30px; height: 30px;
+      border: 1px solid var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s;
+      opacity: 0.35;
+    }
+    .cursor-ring.hovering { width: 50px; height: 50px; opacity: 0.7; }
+
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      background: rgba(245,243,239,0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: var(--font); font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+    }
+    .logo span { font-weight: 300; color: var(--muted); }
+    nav { display: flex; gap: 2.5rem; align-items: center; }
+    nav a {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent-warm); }
+
+    /* Filter bar */
+    .filter-bar {
+      position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 100; display: flex; gap: 0.2rem;
+      background: rgba(245,243,239,0.95);
+      border: 1px solid var(--border-mid); border-radius: 100px;
+      padding: 0.35rem 0.45rem; backdrop-filter: blur(16px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .filter-bar button {
+      font-family: var(--font); font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); background: none; border: none;
+      padding: 0.45rem 1.1rem; border-radius: 100px; cursor: none;
+      transition: color 0.3s, background 0.3s;
+    }
+    .filter-bar button.active { background: var(--text); color: var(--bg); }
+    .filter-bar button:hover:not(.active) { color: var(--text); }
+
+    /* Grid */
+    main { flex: 1; padding-top: 72px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+
+    /* Each item is now an <a> tag */
+    .grid-item {
+      position: relative; overflow: hidden;
+      aspect-ratio: 1 / 1; background: var(--surface);
+      display: block; text-decoration: none; color: inherit;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .grid-item.visible { opacity: 1; transform: translateY(0); }
+    .grid-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.7s var(--ease);
+    }
+    .grid-item:hover img { transform: scale(1.04); }
+    .item-overlay {
+      position: absolute; inset: 0;
+      background: rgba(245,243,239,0.92);
+      opacity: 0; transition: opacity 0.35s var(--ease);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.75rem;
+      border-top: 2px solid var(--accent-warm);
+    }
+    .grid-item:hover .item-overlay { opacity: 1; }
+    .item-category {
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; color: var(--accent-warm); margin-bottom: 0.35rem;
+    }
+    .item-title {
+      font-size: 1.1rem; font-weight: 500; line-height: 1.3; color: var(--text);
+    }
+    .item-plus {
+      position: absolute; top: 1.1rem; right: 1.1rem;
+      width: 28px; height: 28px; border: 1px solid var(--border-mid);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--muted); background: var(--bg);
+      opacity: 0; transform: scale(0.8);
+      transition: opacity 0.35s, transform 0.35s var(--ease);
+    }
+    .grid-item:hover .item-plus { opacity: 1; transform: scale(1); }
+    .placeholder-inner {
+      position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .placeholder-inner span {
+      font-size: 2.5rem; font-weight: 300; font-style: italic;
+      color: var(--border-mid); user-select: none;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border); padding: 1.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+    .footer-social { display: flex; gap: 1.75rem; }
+    .footer-social a {
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    .footer-social a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      header { padding: 1.25rem 1.5rem; }
+      footer { padding: 1.25rem 1.5rem; }
+      nav { gap: 1.5rem; }
+    }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header>
+    <a class="logo" href="index.html">Art <span>of</span> Sirio</a>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid" id="grid">
+
+      <!-- Ogni grid-item è ora un <a href="..."> che punta alla pagina del progetto -->
+      <!-- Duplica project.html per ogni progetto e aggiorna href di conseguenza -->
+
+      <a class="grid-item" href="UNSEENPROJECT.html" data-category="design">
+        <img src="images/unseencover.jpg" alt="Brand Identity Studio Nello" />
+        <div class="item-overlay">
+          <div class="item-category">Design</div>
+          <div class="item-title">Brand Identity — Unseen Cat Studio</div>
+        </div>
+        <div class="item-plus">→</div>
+      </a>
+
+      <a class="grid-item" href="MATTEOTTIPROJECT.HTML" data-category="illustrazione">
+        <img src="images/MATTEOTTICOVER.jpg" alt="Brand Identity Studio Nello" />
+        <div class="item-overlay">
+          <div class="item-category">Illustrations</div>
+          <div class="item-title">AD Art - S.O.M.S. Settimo T.se</div>
+        </div>
+        <div class="item-plus">→</div>
+      </a>
+
+      <a class="grid-item" href="REDCROSSPOSTER.HTML" data-category="arte">
+        <img src="images/REDCROSSPOSTERCOVER.jpg" alt="Brand Identity Studio Nello" />
+        <div class="item-overlay">
+          <div class="item-category">Design</div>
+          <div class="item-title">AD Design - Italian Red Cross of Settimo T.se</div>
+        </div>
+        <div class="item-plus">→</div>
+      </a>
+
+        <a class="grid-item" href="CRIPHOTOSET.HTML" data-category="arte">
+        <img src="images/CRIPHOTOCOVER.jpg" alt="Brand Identity Studio Nello" />
+        <div class="item-overlay">
+          <div class="item-category">Photography</div>
+          <div class="item-title">Pohotoset - Italian Red Cross of Settimo T.se</div>
+        </div>
+        <div class="item-plus">→</div>
+      </a>
+
+
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-copy">© 2026 Art of Sirio</span>
+  <div class="footer-social">
+      <a href="https://www.instagram.com/artofsirio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.artstation.com/alessandroceresa" target="_blank" rel="noopener">ArtStation</a>
+      <a href="www.linkedin.com/in/alessandro-sirio-ceresa-4bb8ba252" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .grid-item').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 75);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.grid-item').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('.filter-bar button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-bar button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.grid-item').forEach(item => {
+          item.style.display = (cat === 'all' || item.dataset.category === cat) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

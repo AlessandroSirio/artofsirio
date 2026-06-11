@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Art of Sirio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f3ef; --surface: #eeece8;
+      --border: rgba(0,0,0,0.08); --border-mid: rgba(0,0,0,0.14);
+      --text: #1a1a18; --muted: rgba(26,26,24,0.5);
+      --accent: #2a2a28; --accent-warm: #8a6a4a; --accent-dim: rgba(138,106,74,0.12);
+      --font: 'Ubuntu', sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 300; overflow-x: hidden; cursor: none; display: flex; flex-direction: column; min-height: 100vh; }
+    .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
+    .cursor-ring { position: fixed; width: 30px; height: 30px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s; opacity: 0.35; }
+    .cursor-ring.hovering { width: 50px; height: 50px; opacity: 0.7; }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; background: rgba(245,243,239,0.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); }
+    .logo { font-family: var(--font); font-size: 1rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .logo span { font-weight: 300; color: var(--muted); }
+    nav { display: flex; gap: 2.5rem; }
+    nav a { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent-warm); }
+    main { flex: 1; padding: 8rem 3rem 5rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    /* ── About bio section ── */
+    .about-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: start; }
+    .photo-frame { width: 100%; aspect-ratio: 3 / 4; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-placeholder { font-size: 0.75rem; font-style: italic; color: var(--muted); text-align: center; padding: 2rem; line-height: 1.6; }
+    .photo-caption { margin-top: 1rem; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .about-label { font-size: 0.6rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 500; color: var(--accent-warm); margin-bottom: 1.25rem; }
+    .about-heading { font-size: clamp(2.4rem, 4.5vw, 3.8rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2.25rem; color: var(--text); }
+    .about-heading em { font-style: italic; font-weight: 300; color: var(--accent-warm); }
+    .about-bio { font-size: 0.88rem; line-height: 1.9; color: var(--muted); }
+    .about-bio p + p { margin-top: 1.1rem; }
+    .about-bio strong { font-weight: 500; color: var(--text); }
+    .about-disciplines { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 2rem; }
+    .discipline-tag { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--accent-warm); border: 1px solid rgba(138,106,74,0.3); padding: 0.35rem 0.8rem; border-radius: 100px; }
+    .about-divider { width: 36px; height: 1px; background: var(--border-mid); margin: 2rem 0; }
+    .cv-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border-mid); padding-bottom: 0.2rem; transition: color 0.3s, border-color 0.3s; }
+    .cv-link:hover { color: var(--accent-warm); border-color: var(--accent-warm); }
+    .cv-link::after { content: '↗'; }
+
+    /* ── Projects section ── */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 5rem 0 4.5rem;
+    }
+    .projects-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+    .projects-header-left {}
+    .projects-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent-warm);
+      margin-bottom: 0.75rem;
+    }
+    .projects-heading {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+    .projects-heading em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--accent-warm);
+    }
+    .projects-count {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s var(--ease);
+    }
+    .project-card:hover { background: var(--surface); }
+
+    /* Cover image */
+    .project-cover {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--surface);
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .project-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s var(--ease);
+    }
+    .project-card:hover .project-cover img { transform: scale(1.04); }
+    .project-cover-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-style: italic;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    /* Subtle overlay on hover */
+    .project-cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26,26,24,0);
+      transition: background 0.4s var(--ease);
+      pointer-events: none;
+    }
+    .project-card:hover .project-cover::after { background: rgba(26,26,24,0.04); }
+
+    /* Meta */
+    .project-meta {
+      padding: 1.25rem 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+    }
+    .project-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .project-date {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+      flex-shrink: 0;
+    }
+    .project-role-tag {
+      font-size: 0.56rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--accent-warm);
+      border: 1px solid rgba(138,106,74,0.28);
+      padding: 0.22rem 0.65rem;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .project-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .project-arrow {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), color 0.3s;
+    }
+    .project-card:hover .project-arrow {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--accent-warm);
+    }
+    .project-arrow-line {
+      width: 20px;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s var(--ease);
+    }
+    .project-card:hover .project-arrow-line { width: 28px; }
+
+    /* Scroll-reveal for projects */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-copy { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+    .footer-social { display: flex; gap: 1.75rem; }
+    .footer-social a { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .footer-social a:hover { color: var(--text); }
+    .fade-in { opacity: 0; transform: translateY(18px); animation: fadeUp 0.75s var(--ease) forwards; }
+    .fade-in:nth-child(2) { animation-delay: 0.12s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+      main { padding: 7rem 1.5rem 4rem; }
+      header { padding: 1.25rem 1.5rem; }
+      footer { padding: 1.25rem 1.5rem; }
+      nav { gap: 1.5rem; }
+      .projects-header { flex-direction: column; gap: 0.5rem; }
+    }
+    @media (max-width: 520px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <header>
+    <a class="logo" href="index.html">Art <span>of</span> Sirio</a>
+    <nav>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+  <main>
+
+    <!-- Bio section -->
+    <div class="about-layout">
+      <div class="fade-in">
+        <div class="photo-frame">
+          <!-- Sostituisci con: <img src="images/ritratto.jpg" alt="Sirio" /> -->
+           <img src="images/profilepic.jpg" alt="Sirio" />
+        </div>
+        <p class="photo-caption">Torino, Italy</p>
+      </div>
+      <div class="fade-in">
+        <p class="about-label">About me</p>
+        <h1 class="about-heading">Visual designer,<br><em>artist</em> and<br>world-builder.</h1>
+        <div class="about-bio">
+          <p>My name is Sirio. I'm a young italian artist whose work spans from <strong>visual design</strong>, <strong>illustration</strong> and <strong>contemporary art</strong> — three different languages I use to experiment with my art.</p>
+          <p>My work consists in a constant experiment based on multiple techniques and medias, with the goal of communicating whatever is on my mind in that moment. I'm openly queer and active as a volunteer for organisations tied to the local community.</p>
+          <p> I hold an highscool diploma in Graphic Design (2022) obtained at the Felice Faccio highschool of Castellamonte and I'm currently graduating in New Art Technologies at the Albertina Fine Arts Academy of Turin.</p>
+        </div>
+        <div class="about-disciplines">
+          <span class="discipline-tag">Visual Design</span>
+          <span class="discipline-tag">Brand Identity</span>
+          <span class="discipline-tag">Illustration</span>
+          <span class="discipline-tag">Worldbuilding</span>
+          <span class="discipline-tag">Contemporary Art</span>
+        </div>
+    </div>
+
+  </main>
+  <footer>
+    <span class="footer-copy">© 2026 Art of Sirio</span>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/artofsirio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.artstation.com/alessandroceresa" target="_blank" rel="noopener">ArtStation</a>
+      <a href="www.linkedin.com/in/alessandro-sirio-ceresa-4bb8ba252" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

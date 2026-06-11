@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Art of Sirio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f3ef; --surface: #eeece8;
+      --border: rgba(0,0,0,0.08); --border-mid: rgba(0,0,0,0.14);
+      --text: #1a1a18; --muted: rgba(26,26,24,0.5);
+      --accent: #2a2a28; --accent-warm: #8a6a4a; --accent-dim: rgba(138,106,74,0.12);
+      --font: 'Ubuntu', sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 300; overflow-x: hidden; cursor: none; display: flex; flex-direction: column; min-height: 100vh; }
+    .cursor { position: fixed; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
+    .cursor-ring { position: fixed; width: 30px; height: 30px; border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s; opacity: 0.35; }
+    .cursor-ring.hovering { width: 50px; height: 50px; opacity: 0.7; }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; background: rgba(245,243,239,0.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); }
+    .logo { font-family: var(--font); font-size: 1rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .logo span { font-weight: 300; color: var(--muted); }
+    nav { display: flex; gap: 2.5rem; }
+    nav a { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent-warm); }
+    main { flex: 1; padding: 8rem 3rem 5rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 6rem; align-items: start; }
+    .contact-label { font-size: 0.6rem; letter-spacing: 0.26em; text-transform: uppercase; font-weight: 500; color: var(--accent-warm); margin-bottom: 1.25rem; }
+    .contact-heading { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2rem; }
+    .contact-heading em { font-style: italic; font-weight: 300; color: var(--accent-warm); }
+    .contact-intro { font-size: 0.88rem; line-height: 1.9; color: var(--muted); }
+    .contact-intro p + p { margin-top: 1rem; }
+    .contact-divider { width: 36px; height: 1px; background: var(--border-mid); margin: 2rem 0; }
+    .direct-contacts { display: flex; flex-direction: column; gap: 1.25rem; }
+    .direct-contact-item .label { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; color: rgba(26,26,24,0.3); margin-bottom: 0.2rem; }
+    .direct-contact-item a { font-size: 0.82rem; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.3s, border-color 0.3s; }
+    .direct-contact-item a:hover { color: var(--accent-warm); border-color: rgba(138,106,74,0.3); }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
+    .form-group label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; color: rgba(26,26,24,0.4); }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: #fff;
+      border: 1px solid var(--border-mid);
+      color: var(--text);
+      font-family: var(--font); font-weight: 300; font-size: 0.88rem;
+      padding: 0.8rem 1rem; outline: none;
+      transition: border-color 0.3s;
+      border-radius: 0; appearance: none; -webkit-appearance: none; cursor: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--accent-warm); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(26,26,24,0.25); }
+    .form-group textarea { resize: vertical; min-height: 130px; line-height: 1.7; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-submit { display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem; gap: 1rem; }
+    .submit-btn {
+      font-family: var(--font); font-weight: 500;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #fff; background: var(--text);
+      border: none; padding: 0.9rem 2.2rem;
+      cursor: none; transition: background 0.3s, transform 0.2s;
+    }
+    .submit-btn:hover { background: var(--accent-warm); transform: translateY(-1px); }
+    .submit-btn:active { transform: translateY(0); }
+    .form-note { font-size: 0.6rem; color: var(--muted); line-height: 1.5; text-align: right; }
+
+    .form-success { display: none; padding: 1.25rem; border: 1px solid rgba(138,106,74,0.25); background: var(--accent-dim); font-size: 0.82rem; color: var(--accent-warm); line-height: 1.7; }
+
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; }
+    .footer-copy { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+    .footer-social { display: flex; gap: 1.75rem; }
+    .footer-social a { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+    .footer-social a:hover { color: var(--text); }
+    .fade-in { opacity: 0; transform: translateY(18px); animation: fadeUp 0.75s var(--ease) forwards; }
+    .fade-in:nth-child(2) { animation-delay: 0.12s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 800px) { .contact-layout { grid-template-columns: 1fr; gap: 3rem; } main { padding: 7rem 1.5rem 4rem; } header { padding: 1.25rem 1.5rem; } footer { padding: 1.25rem 1.5rem; } nav { gap: 1.5rem; } .form-row { grid-template-columns: 1fr; } }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <header>
+    <a class="logo" href="index.html">Art <span>of</span> Sirio</a>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <div class="contact-layout">
+      <div class="fade-in">
+        <p class="contact-label">Contact</p>
+        <h1 class="contact-heading">Let's talk<br>about your<em>idea.</em></h1>
+        <div class="contact-intro">
+          <p>Are you interested in working with me?</p>
+          <p>Let's talk about the project you have in mind. Feel free to contact me whenever you feel ready to!</p>
+        </div>
+        <div class="contact-divider"></div>
+        <div class="direct-contacts">
+          <div class="direct-contact-item">
+            <div class="label">Email</div>
+            <a href="mailto:hello@artofsirio.com">sirioartist@gmail.com</a>
+          </div>
+          <div class="direct-contact-item">
+            <div class="label">Instagram</div>
+            <a href="#" target="_blank" rel="noopener">@artofsirio</a>
+          </div>
+          <div class="direct-contact-item">
+            <div class="label">ArtStation</div>
+            <a href="#" target="_blank" rel="noopener">artstation.com/artofsirio</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-in">
+        <form class="contact-form" id="contact-form"
+              action="https://formspree.io/f/xykayabr"
+              method="POST">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Name" required autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Let's talk about...</label>
+            <select id="subject" name="subject">
+              <option value="" disabled selected>Select a category</option>
+              <option value="design">Visual Design / Brand Identity</option>
+              <option value="illustrazione">Illustration</option>
+              <option value="fumetti">Graphic Novels</option>
+              <option value="arte">Artistic Projects</option>
+              <option value="altro">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">How can i help you?</label>
+            <textarea id="message" name="message" placeholder="How can i help you?" required></textarea>
+          </div>
+
+          <!-- Campo nascosto anti-spam Formspree -->
+          <input type="text" name="_gotcha" style="display:none" />
+
+          <div class="form-submit">
+            <button type="submit" class="submit-btn">Send</button>
+            <p class="form-note"> I usually answer within 24 hours.</p>
+          </div>
+
+        </form>
+        <div class="form-success" id="form-success">
+          I received your message!
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <span class="footer-copy">© 2025 Art of Sirio</span>
+  <div class="footer-social">
+      <a href="https://www.instagram.com/artofsirio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.artstation.com/alessandroceresa" target="_blank" rel="noopener">ArtStation</a>
+      <a href="www.linkedin.com/in/alessandro-sirio-ceresa-4bb8ba252" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+  <script>
+    const cursor = document.getElementById('cursor'); const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => { cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px'; ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px'; });
+    document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+    // Gestione risposta Formspree via fetch (AJAX, senza redirect)
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = form.querySelector('.submit-btn');
+      btn.textContent = 'Invio in corso…';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          btn.textContent = 'Errore — riprova';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'Errore — riprova';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
