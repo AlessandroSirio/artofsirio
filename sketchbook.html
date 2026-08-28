@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sketchbook — Art of Sirio</title>
+  <meta name="description" content="Sketchbook of Sirio: personal work, studies, and fanart, on paper and digital." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f3ef;
+      --surface: #eeece8;
+      --border: rgba(0,0,0,0.08);
+      --border-mid: rgba(0,0,0,0.14);
+      --text: #1a1a18;
+      --muted: rgba(26,26,24,0.5);
+      --accent: #2a2a28;
+      --accent-warm: #8a6a4a;
+      --accent-dim: rgba(138,106,74,0.12);
+      --font: 'Ubuntu', sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font); font-weight: 300;
+      overflow-x: hidden; cursor: none;
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+    .cursor {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s var(--ease);
+    }
+    .cursor-ring {
+      position: fixed; width: 30px; height: 30px;
+      border: 1px solid var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s var(--ease), height 0.25s var(--ease), opacity 0.3s;
+      opacity: 0.35;
+    }
+    .cursor-ring.hovering { width: 50px; height: 50px; opacity: 0.7; }
+
+    /* Header */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      background: rgba(245,243,239,0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: var(--font); font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
+    }
+    .logo span { font-weight: 300; color: var(--muted); }
+    nav { display: flex; gap: 2.5rem; align-items: center; }
+    nav a {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--accent-warm); }
+
+    /* Intro */
+    .sb-intro {
+      padding: 7.5rem 3rem 2.5rem;
+      max-width: 640px;
+    }
+    .sb-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; color: var(--accent-warm); margin-bottom: 0.75rem;
+    }
+    .sb-intro h1 {
+      font-size: 1.7rem; font-weight: 500; line-height: 1.3;
+      margin-bottom: 0.9rem;
+    }
+    .sb-intro p {
+      font-size: 0.85rem; line-height: 1.7; color: var(--muted); font-weight: 300;
+    }
+
+    /* Sketch filter bar (page-local, inline rather than fixed — this page scrolls long) */
+    .sb-filters {
+      display: flex; gap: 0.4rem; flex-wrap: wrap;
+      padding: 0 3rem 2.5rem;
+    }
+    .sb-filters button {
+      font-family: var(--font); font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); background: var(--surface); border: 1px solid var(--border-mid);
+      padding: 0.5rem 1rem; border-radius: 100px; cursor: none;
+      transition: color 0.3s, background 0.3s, border-color 0.3s;
+    }
+    .sb-filters button.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .sb-filters button:hover:not(.active) { color: var(--text); border-color: var(--accent-warm); }
+
+    /* Masonry grid — sketches are irregular by nature, unlike the finished-project grid */
+    main { flex: 1; padding-top: 72px; }
+    .sb-masonry {
+      column-count: 4; column-gap: 3px;
+      padding: 0 3rem 4rem;
+    }
+    .sb-item {
+      break-inside: avoid; margin-bottom: 3px;
+      position: relative; overflow: hidden; background: var(--surface);
+      display: block; cursor: none;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+      border: none; padding: 0; width: 100%; text-align: left;
+    }
+    .sb-item.visible { opacity: 1; transform: translateY(0); }
+    .sb-item img {
+      width: 100%; display: block;
+      transition: transform 0.7s var(--ease), filter 0.5s var(--ease);
+    }
+    .sb-item:hover img { transform: scale(1.03); }
+    .sb-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 0.9rem 1rem;
+      background: linear-gradient(to top, rgba(26,26,24,0.72), rgba(26,26,24,0));
+      opacity: 0; transition: opacity 0.35s var(--ease);
+    }
+    .sb-item:hover .sb-caption { opacity: 1; }
+    .sb-caption .medium {
+      font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase;
+      font-weight: 500; color: #e8c9a8; margin-bottom: 0.2rem;
+    }
+    .sb-caption .date {
+      font-size: 0.68rem; font-weight: 300; color: #f2f0ec;
+    }
+
+    /* Lightbox */
+    .sb-lightbox {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(20,19,17,0.94);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s var(--ease);
+      padding: 4rem 2rem;
+    }
+    .sb-lightbox.open { opacity: 1; pointer-events: all; }
+    .sb-lightbox img {
+      max-width: min(88vw, 900px); max-height: 78vh;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      transform: scale(0.96);
+      transition: transform 0.4s var(--ease);
+    }
+    .sb-lightbox.open img { transform: scale(1); }
+    .sb-lightbox-meta {
+      position: absolute; left: 0; right: 0; bottom: 2.25rem;
+      text-align: center; color: #f2f0ec;
+    }
+    .sb-lightbox-meta .medium {
+      font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #e8c9a8; margin-bottom: 0.3rem;
+    }
+    .sb-lightbox-meta .date { font-size: 0.7rem; color: rgba(242,240,236,0.7); }
+    .sb-lightbox-close {
+      position: absolute; top: 1.75rem; right: 2rem;
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(242,240,236,0.3); background: none;
+      color: #f2f0ec; font-size: 1.1rem; cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .sb-lightbox-close:hover { border-color: #f2f0ec; background: rgba(242,240,236,0.08); }
+    .sb-lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid rgba(242,240,236,0.25); background: rgba(20,19,17,0.4);
+      color: #f2f0ec; font-size: 1.1rem; cursor: none;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .sb-lightbox-nav:hover { border-color: #f2f0ec; background: rgba(242,240,236,0.1); }
+    .sb-lightbox-nav.prev { left: 1.5rem; }
+    .sb-lightbox-nav.next { right: 1.5rem; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border); padding: 1.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+    .footer-social { display: flex; gap: 1.75rem; }
+    .footer-social a {
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+      font-weight: 400; color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    .footer-social a:hover { color: var(--text); }
+
+    @media (max-width: 1100px) { .sb-masonry { column-count: 3; } }
+    @media (max-width: 900px) {
+      .sb-masonry { column-count: 2; }
+      header { padding: 1.25rem 1.5rem; }
+      footer { padding: 1.25rem 1.5rem; }
+      nav { gap: 1.5rem; }
+      .sb-intro, .sb-filters, .sb-masonry { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .sb-lightbox-nav { width: 36px; height: 36px; }
+    }
+    @media (max-width: 560px) { .sb-masonry { column-count: 1; } }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <header>
+    <a class="logo" href="index.html">Art <span>of</span> Sirio</a>
+    <nav>
+      <a href="about.html">About</a>
+      <a href="sketchbook.html" class="active">Sketchbook</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="sb-intro">
+      <div class="sb-eyebrow">Sketchbook</div>
+      <h1>Personal work, studies, and fanart.</h1>
+      <p>A working archive spanning traditional and digital drawing — mostly personal pieces and fanart made digitally, alongside studies and exercises. Updated as new work comes together.</p>
+    </div>
+
+    <div class="sb-filters" id="sb-filters">
+      <button class="active" data-cat="all">All</button>
+      <button data-cat="personal">Personal</button>
+      <button data-cat="fanart">Fanart</button>
+      <button data-cat="studies">Studies</button>
+        </div>
+
+    <!-- Add one .sb-item per sketchbook piece here.
+         Duplicate the <button class="sb-item"> block and update src, data-cat, data-medium and data-date.
+         data-cat should be one of: personal, fanart, studies, traditional. -->
+    <div class="sb-masonry" id="sb-masonry">
+
+      <button class="sb-item" data-cat="studies" data-medium="Digital, study" data-date="August 2026">
+        <img src="images/study1.jpg" alt="Digital fanart piece" />
+        <div class="sb-caption">
+          <div class="medium">Digital, study</div>
+        </div>
+      </button>
+
+      <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/study2.jpg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Digital, study</div>
+        </div>
+      </button>
+
+            <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/study3.jpg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Digital, study</div>
+        </div>
+      </button>
+
+            <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/study4.jpeg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Study, study</div>
+        </div>
+      </button>
+
+            <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/exercise1.jpg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Study, study</div>
+        </div>
+      </button>
+
+            <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/exercise2.jpg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Study, study</div>
+        </div>
+      </button>
+
+            <button class="sb-item" data-cat="studies" data-medium="Digital, personal work" data-date="August 2026">
+        <img src="images/exercise3.jpg" alt="Digital personal piece" />
+        <div class="sb-caption">
+          <div class="medium">Study, study</div>
+        </div>
+      </button>
+
+
+
+
+    </div>
+  </main>
+
+  <div class="sb-lightbox" id="sb-lightbox">
+    <button class="sb-lightbox-close" id="sb-lightbox-close">✕</button>
+    <button class="sb-lightbox-nav prev" id="sb-lightbox-prev">←</button>
+    <img id="sb-lightbox-img" src="" alt="" />
+    <button class="sb-lightbox-nav next" id="sb-lightbox-next">→</button>
+    <div class="sb-lightbox-meta">
+      <div class="medium" id="sb-lightbox-medium"></div>
+      <div class="date" id="sb-lightbox-date"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-copy">© 2026 Art of Sirio</span>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/artofsirio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.artstation.com/alessandroceresa" target="_blank" rel="noopener">ArtStation</a>
+      <a href="www.linkedin.com/in/alessandro-sirio-ceresa-4bb8ba252" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .sb-item').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+    });
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 50);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    document.querySelectorAll('.sb-item').forEach(el => observer.observe(el));
+
+    // Filtering
+    document.querySelectorAll('.sb-filters button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sb-filters button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.sb-item').forEach(item => {
+          item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+        });
+      });
+    });
+
+    // Lightbox
+    const items = Array.from(document.querySelectorAll('.sb-item'));
+    const lightbox = document.getElementById('sb-lightbox');
+    const lbImg = document.getElementById('sb-lightbox-img');
+    const lbMedium = document.getElementById('sb-lightbox-medium');
+    const lbDate = document.getElementById('sb-lightbox-date');
+    let currentIndex = 0;
+
+    function visibleItems() {
+      return items.filter(i => i.style.display !== 'none');
+    }
+
+    function openLightbox(item) {
+      const list = visibleItems();
+      currentIndex = list.indexOf(item);
+      renderLightbox(list);
+      lightbox.classList.add('open');
+    }
+
+    function renderLightbox(list) {
+      const item = list[currentIndex];
+      const img = item.querySelector('img');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbMedium.textContent = item.dataset.medium || '';
+      lbDate.textContent = item.dataset.date || '';
+    }
+
+    items.forEach(item => item.addEventListener('click', () => openLightbox(item)));
+
+    document.getElementById('sb-lightbox-close').addEventListener('click', () => lightbox.classList.remove('open'));
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+    document.getElementById('sb-lightbox-prev').addEventListener('click', () => {
+      const list = visibleItems();
+      currentIndex = (currentIndex - 1 + list.length) % list.length;
+      renderLightbox(list);
+    });
+    document.getElementById('sb-lightbox-next').addEventListener('click', () => {
+      const list = visibleItems();
+      currentIndex = (currentIndex + 1) % list.length;
+      renderLightbox(list);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') lightbox.classList.remove('open');
+      if (e.key === 'ArrowLeft') document.getElementById('sb-lightbox-prev').click();
+      if (e.key === 'ArrowRight') document.getElementById('sb-lightbox-next').click();
+    });
+  </script>
+</body>
+</html>
